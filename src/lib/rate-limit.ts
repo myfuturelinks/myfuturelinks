@@ -29,7 +29,7 @@ export async function limitByIp(ip: string) {
   const now = Date.now();
   const win = 60_000;
   const key = `ip:${ip}`;
-  const arr = (mem.get(key) ?? []).filter((t) => now - t < win);
+  const arr = (mem.get(key) ?? []).filter((t: any) => now - t < win);
   arr.push(now);
   mem.set(key, arr);
   return { ok: arr.length <= 5, remaining: Math.max(0, 5 - arr.length) };
