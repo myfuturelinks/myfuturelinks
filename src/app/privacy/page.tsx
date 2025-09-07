@@ -33,8 +33,8 @@ export default function PrivacyPage() {
         <p>
           Data controller: <strong>{site.legalName}</strong>
           <br />
-          Address: {site.address}, {site.country}
-          <br />
+          {/* Address: {site.address}, {site.country}
+          <br /> */}
           Email: <a href={`mailto:${site.contactEmail}`}>{site.contactEmail}</a>
         </p>
 
@@ -194,8 +194,8 @@ export default function PrivacyPage() {
         <p>
           {site.legalName}
           <br />
-          {site.address}, {site.country}
-          <br />
+          {/* {site.address}, {site.country}
+          <br /> */}
           <a href={`mailto:${site.contactEmail}`}>{site.contactEmail}</a>
         </p>
 

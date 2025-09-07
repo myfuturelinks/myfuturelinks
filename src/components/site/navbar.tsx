@@ -58,7 +58,12 @@ export function Navbar() {
           asChild
           className="mt-6 w-full rounded-xl bg-brand-500 text-ink hover:opacity-90"
         >
-          <Link href="/contact">Start now</Link>
+          <Link
+            href="https://docs.google.com/forms/d/e/1FAIpQLSecQNqkvEsXhKS50PiNAqNSkibYckHafXp8qjHsFc5BQiGdhg/viewform"
+            target="_blank"
+          >
+            Apply
+          </Link>
         </Button>
       </SheetClose>
     </nav>
@@ -81,7 +86,12 @@ export function Navbar() {
             asChild
             className="rounded-xl bg-brand-500 text-ink hover:opacity-90"
           >
-            <Link href="/apply">Apply</Link>
+            <Link
+              href="https://docs.google.com/forms/d/e/1FAIpQLSecQNqkvEsXhKS50PiNAqNSkibYckHafXp8qjHsFc5BQiGdhg/viewform"
+              target="_blank"
+            >
+              Apply
+            </Link>
           </Button>
         </div>
 

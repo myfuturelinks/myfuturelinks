@@ -13,7 +13,7 @@ export function Footer() {
             Privacy
           </Link>
           {/* you can add Terms later: <Link href="/terms">Terms</Link> */}
-          <a
+          {/* <a
             href={site.social.x}
             target="_blank"
             rel="noreferrer"
@@ -36,7 +36,7 @@ export function Footer() {
             className="opacity-90 hover:opacity-100"
           >
             Instagram
-          </a>
+          </a> */}
           <a
             href={site.social.li}
             target="_blank"

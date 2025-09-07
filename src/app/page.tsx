@@ -23,7 +23,8 @@ export default function HomePage() {
             </ul>
             <div className="mt-5 flex gap-3">
               <Link
-                href="/apply?type=work"
+                href="https://docs.google.com/forms/d/e/1FAIpQLSecQNqkvEsXhKS50PiNAqNSkibYckHafXp8qjHsFc5BQiGdhg/viewform"
+                target="_blank"
                 className="px-5 py-3 rounded-2xl ring-1 ring-ink/15 hover:bg-brand-500"
               >
                 Apply for jobs
@@ -47,7 +48,8 @@ export default function HomePage() {
             </ul>
             <div className="mt-5 flex gap-3">
               <Link
-                href="/apply?type=study"
+                href="https://docs.google.com/forms/d/e/1FAIpQLSecQNqkvEsXhKS50PiNAqNSkibYckHafXp8qjHsFc5BQiGdhg/viewform"
+                target="_blank"
                 className="px-5 py-3 rounded-2xl ring-1 ring-ink/15 hover:bg-brand-500"
               >
                 Start admissions
