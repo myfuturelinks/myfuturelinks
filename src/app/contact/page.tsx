@@ -16,8 +16,8 @@ export default function ContactPage() {
       <Container>
         <h1 className="text-3xl font-extrabold text-ink">Contact us</h1>
         <p className="mt-3 text-neutral-700 leading-relaxed max-w-2xl">
-          Tell us whether you're applying for Work or Study. We’ll reply by
-          email within 1–2 business days.
+          Tell us whether you&apos;re applying for Work or Study. We&apos;ll
+          reply by email within 1–2 business days.
         </p>
 
         <div className="mt-8 max-w-xl">
