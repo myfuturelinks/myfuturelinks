@@ -1,9 +1,14 @@
 import "./globals.css";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { site } from "@/lib/site-config";
 import { Navbar } from "@/components/site/navbar";
 import { Footer } from "@/components/site/footer";
 import { ToastProvider } from "@/components/ui/use-toast";
+
+// Set theme color via viewport (not in metadata)
+export const viewport: Viewport = {
+  themeColor: "#0A174E",
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
@@ -22,7 +27,6 @@ export const metadata: Metadata = {
   alternates: { canonical: "/" },
 
   manifest: "/site.webmanifest",
-  themeColor: "#0A174E",
 
   openGraph: {
     type: "website",
@@ -39,7 +43,7 @@ export const metadata: Metadata = {
     images: [site.ogImage],
   },
 
-  // ✅ Only ONE icons section
+  // One icons block only
   icons: {
     icon: [
       { url: "/favicon.ico" },
