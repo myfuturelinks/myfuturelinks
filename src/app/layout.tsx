@@ -3,7 +3,6 @@ import type { Metadata } from "next";
 import { site } from "@/lib/site-config";
 import { Navbar } from "@/components/site/navbar";
 import { Footer } from "@/components/site/footer";
-import { Toaster } from "@/components/ui/toaster";
 import { ToastProvider } from "@/components/ui/use-toast";
 
 export const metadata: Metadata = {
@@ -13,18 +12,6 @@ export const metadata: Metadata = {
     template: `%s · ${site.name}`,
   },
   description: site.description,
-  manifest: "/site.webmanifest",
-  // themeColor: "#0A174E",
-  icons: {
-    icon: [
-      { url: "/favicon.ico" },
-      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
-      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
-      { url: "/android-chrome-192x192.png", sizes: "192x192", type: "image/png" },
-      { url: "/android-chrome-512x512.png", sizes: "512x512", type: "image/png" },
-    ],
-    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
-  },
   keywords: [
     "work in Europe",
     "study in Europe",
@@ -33,6 +20,10 @@ export const metadata: Metadata = {
     "Germany admissions",
   ],
   alternates: { canonical: "/" },
+
+  manifest: "/site.webmanifest",
+  themeColor: "#0A174E",
+
   openGraph: {
     type: "website",
     url: site.url,
@@ -47,7 +38,28 @@ export const metadata: Metadata = {
     description: site.description,
     images: [site.ogImage],
   },
-  icons: { icon: "/favicon.ico" },
+
+  // ✅ Only ONE icons section
+  icons: {
+    icon: [
+      { url: "/favicon.ico" },
+      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      {
+        url: "/android-chrome-192x192.png",
+        sizes: "192x192",
+        type: "image/png",
+      },
+      {
+        url: "/android-chrome-512x512.png",
+        sizes: "512x512",
+        type: "image/png",
+      },
+    ],
+    apple: [
+      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+    ],
+  },
 };
 
 export default function RootLayout({
@@ -60,10 +72,8 @@ export default function RootLayout({
       <body className="flex min-h-screen flex-col bg-white text-ink">
         <ToastProvider>
           <Navbar />
-          <main className="flex-1">{children}</main>{" "}
-          {/* grows to push footer down */}
+          <main className="flex-1">{children}</main>
           <Footer />
-          {/* <Toaster /> */}
         </ToastProvider>
       </body>
     </html>

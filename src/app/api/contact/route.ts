@@ -134,7 +134,7 @@ export async function POST(req: Request) {
       from,
       to: [to],
       subject: `New ${safeCat} enquiry — ${safeName}`,
-      replyTo: body.email, // camelCase for Resend SDK
+      reply_to: body.email, // camelCase for Resend SDK
       text,
     });
 

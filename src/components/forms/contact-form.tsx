@@ -25,9 +25,14 @@ type Category = "Category" | "Work" | "Study";
 const FormSchema = z.object({
   name: z.string().min(2, "Please enter your full name").max(80),
   email: z.string().email("Enter a valid email").max(120),
-  category: z.enum(["Category", "Work", "Study"], {
-    required_error: "Please choose a category",
-  }),
+  // category: z.enum(["Category", "Work", "Study"], {
+  //   required_error: "Please choose a category",
+  // }),
+  category: z
+    .enum(["Category", "Work", "Study"])
+    .refine((v) => v !== "Category", {
+      message: "Please choose Work or Study",
+    }),
   // local phone parts; we will assemble phoneE164 on submit
   phoneCountry: z.string().optional(), // like "+977"
   phoneLocal: z.string().optional(), // user digits
