@@ -1,217 +1,313 @@
-\# MyFutureLinks · Work & Study in Europe
+MyFutureLinks --- Work/Study in Europe
 
-\[\![Next.js\](https://img.shields.io/badge/Next.js-14-black?logo=nextdotjs)\](https://nextjs.org/)
-\[\![TypeScript\](https://img.shields.io/badge/TypeScript-5-blue?logo=typescript)\](https://www.typescriptlang.org/)
-\[\![Tailwind
-CSS\](https://img.shields.io/badge/Tailwind-3-38B2AC?logo=tailwindcss&logoColor=white)\](https://tailwindcss.com/)
-\[\![Vercel\](https://img.shields.io/badge/Deployed%20on-Vercel-000?logo=vercel)\](https://vercel.com/)
-\![License\](https://img.shields.io/badge/License-Private-lightgrey)
+A professional recruitment + study-admissions site built with Next.js
+(App Router, TS), Tailwind, shadcn/ui, Zod validation, Resend for email,
+and deployed on Vercel. Includes: SEO metadata, responsive layout,
+job/study listings with filters, accessible forms with phone + country
+code, rate-limited contact API, and a polished privacy policy.
 
-A professional recruitment + admissions website for candidates heading
-to the EU. Built with \*\*Next.js (App Router, TS)\*\*,
-\*\*Tailwind\*\*, \*\*shadcn/ui\*\*, \*\*Zod\*\*, and \*\*Resend\*\*
-email. Deployed on \*\*Vercel\*\* with custom domain (Combell DNS).
+Quick start \# 1) Clone + install git clone \<your-repo-url\>
+myfuturelinks cd myfuturelinks npm ci
 
-\-\--
+\# 2) Configure env cp .env.example .env \# Edit the values (sender
+email/domain, contact recipient, site URL, etc.)
 
-\## Table of contents
+\# 3) Run locally npm run dev \# http://localhost:3000
 
-\- \[Features\](#features) - \[Tech stack\](#tech-stack) - \[Project
-structure\](#project-structure) - \[Getting
-started\](#getting-started) - \[Environment
-variables\](#environment-variables) - \[Scripts\](#scripts) - \[Data
-model (jobs & programs)\](#data-model-jobs\--programs) - \[Contact &
-email delivery\](#contact\--email-delivery) - \[SEO &
-assets\](#seo\--assets) - \[Branching workflow\](#branching-workflow) -
-\[Deployment (Vercel + Combell
-DNS)\](#deployment-vercel\--combell-dns) - \[Common
-tasks\](#common-tasks) - \[Troubleshooting\](#troubleshooting) -
-\[Roadmap\](#roadmap) - \[License\](#license)
+Tech stack
 
-\-\--
+Next.js 14 (App Router, RSC, Route Handlers)
 
-\## Features
+TypeScript
 
-\- ✅ Modern landing with sector cards, CTAs, and FAQs - ✅
-\*\*Work\*\* & \*\*Study\*\* pages with filters and responsive card grid
+Tailwind CSS (+ small theme tokens)
 
-- ✅ Accessible \*\*Contact\*\* form (country code + phone), Zod
-  validation - ✅ Email sending via \*\*Resend\*\* (or SMTP alternative)
-- ✅ Built-in \*\*rate limiting\*\* & cooldown (anti-spam) - ✅
-  \*\*SEO\*\*: metadata, OpenGraph, Twitter, JSON-LD, favicons/manifest -
-  ✅ Polished \*\*Privacy Policy\*\* (sticky ToC, anchors) - ✅ Clean
-  mobile nav drawer, no rounded corners (per product spec)
+shadcn/ui (Select, Toast, Drawer/Sheet)
 
-\-\--
+Zod + react-hook-form
 
-\## Tech stack
+Resend (or SMTP) for contact emails
 
-\- \*\*Next.js 14\*\* (App Router, Route Handlers) - \*\*TypeScript\*\*
+Vercel (hosting, previews)
 
-- \*\*Tailwind CSS\*\* (+ brand token utilities) - \*\*shadcn/ui\*\*
-  (Select, Toast, Drawer) - \*\*Zod\*\* + \*\*react-hook-form\*\* -
-  \*\*Resend\*\* for email (DKIM/SPF verified sender domain) -
-  \*\*Vercel\*\* hosting (previews per PR/branch)
+Optional anti-bot: Cloudflare Turnstile (off by default)
 
-\-\--
-
-\## Project structure
-
-\`\`\`txt src/ app/ page.tsx \# Home work/page.tsx \# Work abroad
-study/page.tsx \# Study in EU contact/page.tsx \# Contact form
-privacy/page.tsx \# Privacy policy api/ contact/route.ts \# POST -\>
-email with rate limit
+Project structure src/ app/ (routes) page.tsx \# Home (landing)
+work/page.tsx \# Work abroad (filters + cards) study/page.tsx \# Study
+in EU (filters + cards) contact/page.tsx \# Contact form page
+privacy/page.tsx \# Polished privacy policy api/ contact/route.ts \#
+POST handler -\> Resend/SMTP with rate limit
 
 components/ forms/contact-form.tsx jobs/JobCard.tsx jobs/JobsGrid.tsx
 study/ProgramCard.tsx site/navbar.tsx site/footer.tsx site/container.tsx
-ui/... \# shadcn components + use-toast
+ui/... (shadcn components + use-toast)
 
-data/ jobs.ts \# Jobs dataset programs.ts \# Study programs dataset
+data/ jobs.ts \# Jobs JSON-like data programs.ts \# Study programs data
 
-lib/ site-config.ts \# Name, URL, descriptions, OG image rate-limit.ts
-\# In-memory throttle + cooldown sanitize.ts \# stripCRLF, clamp Getting
-started bash Copy code \# 1) Clone & install git clone \<repo-url\>
-myfuturelinks cd myfuturelinks npm ci
+lib/ site-config.ts \# name, url, og image, descriptions rate-limit.ts
+\# in-memory IP + email cooldown sanitize.ts \# strip CRLF, clamp
 
-\# 2) Configure environment cp .env.example .env \# Edit values (sender
-domain, recipient email, site URL, etc.)
+Paths may vary slightly---adjust names to match your repo.
 
-\# 3) Run npm run dev \# http://localhost:3000 Tip: Run npm run
-typecheck && npm run build before pushing to catch issues early.
+Environment variables
 
-Environment variables Key Example / Notes NEXT_PUBLIC_SITE_URL
-https://myfuturelinks.com (set per environment) MAIL_PROVIDER resend
-(default). SMTP is possible if you wire it in the API route. MAIL_FROM
-\"MyFutureLinks \<contact@myfuturelinks.com\>\" (must be a verified
-sender) CONTACT_TO_EMAIL enquiry@myfuturelinks.com (where contact
-messages arrive) RESEND_API_KEY
-re\_\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*
-CONTACT_COOLDOWN_SECONDS 60 (per-email cooldown; also rate-limits per
-IP) TURNSTILE\_\* Optional Cloudflare Turnstile (SITE_KEY, SECRET_KEY)
+Create .env from the example below. Never commit your real .env.
 
-In Vercel's UI, do not include quotes around MAIL_FROM. Locally in .env,
-quotes are fine.
+.env.example \# \-\-- App \-\--
+NEXT_PUBLIC_SITE_URL=https://myfuturelinks.com
 
-Scripts Script What it does npm run dev Next dev server with HMR npm run
-build Production build npm run start Start compiled server npm run lint
-ESLint npm run typecheck TypeScript checks (no emit)
+\# \-\-- Mail provider (Option B: Resend) \-\-- MAIL_PROVIDER=resend
+MAIL_FROM=\"MyFutureLinks \<contact@myfuturelinks.com\>\" \# must be a
+verified sender CONTACT_TO_EMAIL=enquiry@myfuturelinks.com
+RESEND_API_KEY=re\_\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*
 
-Data model (jobs & programs) No database needed---just edit the arrays.
+\# \-\-- Cooldown (rate limit) \-\-- CONTACT_COOLDOWN_SECONDS=60
 
-ts Copy code // src/data/jobs.ts export type Job = { slug: string;
-title: string; location: string; // \"City, Country\" country: string;
-// e.g., \"Belgium\" sector: \"Healthcare\" \| \"Hospitality\" \|
-\"Logistics\" \| \"Tech & IT\"; languages?: { \[lang: string\]:
-\"A2\"\|\"A2+\"\|\"B1\"\|\"B1+\"\|\"B2\"\|\"B2+\"\|\"C1\"\|\"C1+\" };
-requirements: string\[\]; applyUrl?: string; }; export const JOBS:
-Job\[\] = \[/\* ... \*/\]; ts Copy code // src/data/programs.ts export
-type Program = { slug: string; title: string; country: \"Belgium\" \|
-\"Netherlands\" \| \"Germany\" \| \"Malta\" \| \"Other\"; level:
-\"Bachelor\" \| \"Master\" \| \"Vocational\" \| \"Foundation\";
-languages?: { \[lang: string\]: \"B1\"\|\"B2\"\|\"C1\" }; requirements:
-string\[\]; applyUrl?: string; }; export const PROGRAMS: Program\[\] =
-\[/\* ... \*/\]; Contact & email delivery UI:
-components/forms/contact-form.tsx (Zod + RHF + shadcn Select)
+\# \-\-- Optional Turnstile (bot protection) \# Enable only if you add
+the widget on the form \# TURNSTILE_SITE_KEY= \# TURNSTILE_SECRET_KEY=
 
-API: app/api/contact/route.ts
+If you prefer SMTP instead of Resend, swap MAIL_PROVIDER=smtp and add
+SMTP creds in the API route (we already wired the switch).
 
-Validates & sanitizes input
+Development scripts npm run dev \# Next dev server npm run build \#
+Production build npm run start \# Start built app npm run lint \# ESLint
+npm run typecheck \# TypeScript noEmit type checks
 
-Rate limits per IP + CONTACT_COOLDOWN_SECONDS per email
+Data: Jobs & Study programs
 
-Sends via Resend (Option B). SMTP can be added if you prefer.
+We intentionally made these static TS files (simple to edit, no DB).
 
-Resend DNS: Verify your domain (SPF + DKIM TXT records) in Combell. When
-Resend shows "Verified", emails deliver reliably.
+src/data/jobs.ts (shape):
 
-SEO & assets Global metadata in app/layout.tsx
+export type Job = { slug: string; title: string; location: string; //
+\"City, Country\" country: string; // \"Belgium\" \| \"Netherlands\" \|
+\"Germany\" \| \... sector: \"Healthcare\" \| \"Hospitality\" \|
+\"Logistics\" \| \"Tech & IT\"; languages?: { // optional; can be empty
+\[lang: string\]:
+\"A2\"\|\"A2+\"\|\"B1\"\|\"B1+\"\|\"B2\"\|\"B2+\"\|\"C1\"\|\"C1+\"; };
+requirements: string\[\]; // bullet points applyUrl?: string; //
+external or internal link }; export const JOBS: Job\[\] = \[ /\* ... \*/
+\];
 
-Per-page metadata in each route (/contact, /privacy, ...)
+src/data/programs.ts (shape):
 
-JSON-LD helper: components/seo/jsonld.tsx
+export type Program = { slug: string; title: string; country:
+\"Belgium\" \| \"Netherlands\" \| \"Germany\" \| \"Malta\" \| \"Other\";
+level: \"Bachelor\" \| \"Master\" \| \"Vocational\" \| \"Foundation\";
+languages?: { \[lang: string\]: \"B1\"\|\"B2\"\|\"C1\" }; // optional
+requirements: string\[\]; applyUrl?: string; }; export const PROGRAMS:
+Program\[\] = \[ /\* ... \*/ \];
 
-Favicons & site.webmanifest in /public
+Add a new card
 
-Set NEXT_PUBLIC_SITE_URL correctly per environment for canonicals/OG
+Append to JOBS or PROGRAMS.
 
-Branching workflow vbnet Copy code main → production dev → integration
-feature/\<slug\> → short-lived branches off dev Create a feature
+Make sure slug is unique.
 
-bash Copy code git checkout dev git pull git checkout -b
-feature/\<slug\> \# \... code \... git add -A git commit -m
-\"feat(area): short description\" git push -u origin feature/\<slug\>
+The filters on /work and /study read from these arrays and update
+automatically.
+
+Contact form & email delivery
+
+UI: src/components/forms/contact-form.tsx (Zod + react-hook-form +
+shadcn Select)
+
+API: src/app/api/contact/route.ts
+
+Validates payload (Zod)
+
+Rate-limits (IP + 60s email cooldown via CONTACT_COOLDOWN_SECONDS)
+
+Sanitizes input (CR/LF stripping)
+
+Sends email using Resend (Option B) or SMTP (Option A, commented)
+
+Success/failure messages via toast; "cooldown" errors tell users how
+many seconds to wait.
+
+Resend DNS (for your domain sender)
+
+In Resend: add sender domain (e.g. myfuturelinks.com or
+send.myfuturelinks.com).
+
+Add the SPF + DKIM TXT (and optional DMARC/MX) records to Combell.
+
+Wait until Resend shows "verified".
+
+In .env, set MAIL_FROM and CONTACT_TO_EMAIL appropriately.
+
+SEO & metadata
+
+Global metadata: src/app/layout.tsx
+
+title, description, openGraph, twitter, icons, manifest.
+
+Page‐specific (/contact, /privacy, etc.) set their own metadata.
+
+JSON-LD helpers: src/components/seo/jsonld.tsx.
+
+Favicon/manifest: put files in /public (already wired).
+
+Set NEXT_PUBLIC_SITE_URL to your real domain in Vercel envs (Production
+vs Preview).
+
+Styling & components
+
+Tailwind: base tokens in globals.css.
+
+text-ink / ink opacity classes for brand color
+
+General spacing: max-w-6xl content container via Container component.
+
+shadcn/ui: Selects, Toasts, Drawer (mobile nav), etc.
+
+To add a new UI primitive, run the shadcn generator (already installed).
+
+Navigation
+
+Desktop top bar + mobile drawer in src/components/site/navbar.tsx
+
+Primary links: Home, Work abroad, Study in EU, FAQ, Contact (Hero CTA
+"Start now").
+
+Mobile menu is full height drawer; backdrop blur; no rounded corners per
+your preference.
+
+Privacy & security
+
+Privacy Policy page styled with sticky table-of-contents and anchor
+links.
+
+Rate limiting:
+
+Memory-based IP throttle + per-email cooldown in lib/rate-limit.ts.
+
+For production scale, replace with Upstash Redis (the function signature
+makes this easy).
+
+Optional Cloudflare Turnstile (tokens supported in the API route; add
+widget if you enable).
+
+Deployment Vercel
+
+Production branch: main
+
+Preview deployments: all branches (including dev & feature/\*)
+
+Env vars: set per environment (Production vs Preview)
+
+NEXT_PUBLIC_SITE_URL=https://myfuturelinks.com (Prod)
+
+NEXT_PUBLIC_SITE_URL=https://dev.myfuturelinks.com or the preview URL
+(Preview)
+
+DNS (Combell → Vercel)
+
+A record (root/apex myfuturelinks.com) → Vercel IP
+
+Today either 76.76.21.21 or 216.198.79.1 (Vercel may recommend the newer
+one)
+
+CNAME www → the cname.vercel-dns.com value Vercel shows
+
+SSL auto-provisions in Vercel (give it a few minutes)
+
+We also redirect the \*.vercel.app host to the primary domain in
+src/middleware.ts (optional).
+
+Branching model (lightweight)
+
+main = production
+
+dev = integration/staging
+
+feature/\<slug\> → branches off dev
+
+Create a feature:
+
+git checkout dev git pull git checkout -b feature/\<slug\> \# \... code
+\... git commit -m \"feat(area): short description\" git push -u origin
+feature/\<slug\>
+
 Open a PR into dev. When ready to release:
 
-bash Copy code git checkout main git pull git merge \--no-ff dev -m
-\"chore: release\" git push Delete branches
+git checkout main git pull git merge \--no-ff dev -m \"chore: release\"
+git push
 
-bash Copy code git branch -d feature/\<slug\> git push origin \--delete
-feature/\<slug\> Deployment (Vercel + Combell DNS) Connect repo to
-Vercel (Production branch = main).
+Delete a branch:
 
-Add your domains in Vercel (myfuturelinks.com, www.myfuturelinks.com).
+git checkout dev git branch -d feature/\<slug\> \# local git push origin
+\--delete feature/\<slug\> \# remote
 
-Combell DNS:
+Common tasks Add a new job
 
-Apex A → Vercel IP (e.g., 76.76.21.21 or the newer IP Vercel recommends
-in the dashboard)
+Edit src/data/jobs.ts → add to JOBS.
 
-CNAME www → the \*.vercel-dns.com value Vercel shows
+Confirm it appears under /work (filters: country, sector, language).
 
-Wait for SSL to provision.
+Add a new study program
 
-Set Vercel Environment Variables for Production & Preview (see
-.env.example).
+Edit src/data/programs.ts → add to PROGRAMS.
 
-Common tasks Add a job → edit src/data/jobs.ts
+Confirm it appears under /study (filters: country, level, language).
 
-Add a program → edit src/data/programs.ts
+Change hero text, sectors, or FAQ
 
-Change hero text / sectors / FAQ → app/page.tsx
+Home: src/app/page.tsx (Hero + sector cards + FAQ blocks).
 
-Change favicon / OG image → replace files in /public
+Change favicon/manifest OG image
 
-Troubleshooting Email not received? • Resend domain verified (SPF/DKIM
-✅) • MAIL_FROM uses that domain • Check Vercel logs for POST
-/api/contact
+Replace files in /public (keep names) and redeploy.
 
-"useSearchParams should be wrapped in suspense" Move the hook to a
-client component or wrap with \<Suspense\>.
+Troubleshooting
 
-Vercel shows "DNS change recommended" Update the apex A record to the IP
-Vercel suggests; old IP still works, but switching is recommended.
+"useSearchParams should be wrapped in suspense" Don't call
+useSearchParams in server components. If needed, wrap the client section
+in \<Suspense\> or move to a client component.
 
-Roadmap Cookie/consent banner + Vercel Analytics
+Email not received Check:
 
-Move rate limit to Upstash Redis
+Resend domain verified (SPF/DKIM green)
+
+MAIL_FROM uses that verified domain
+
+CONTACT_TO_EMAIL is correct
+
+Look at Vercel logs for POST /api/contact
+
+DNS change recommended in Vercel Update the apex A record to the IP
+Vercel suggests; both old and new usually work.
+
+Roadmap / Wish-list
+
+Cookie/consent banner + Vercel Analytics
+
+Migrate rate limit to Upstash Redis
 
 Admin JSON editor for jobs/programs
 
 i18n (Nepali/English) for primary pages
 
-CI (GitHub Actions) for lint/typecheck/build
-
 E2E tests (Playwright) for contact + filters
 
-License Private project --- © MyFutureLinks. All rights reserved.
+CI (GitHub Actions) for lint/typecheck/build
 
-yaml Copy code
+Structured logs + monitoring
 
-\-\--
+License
 
-\### \`.env.example\`
+Private project (© MyFutureLinks). All rights reserved.
 
-\`\`\`env \# Public site URL (used for canonical URLs, OpenGraph, etc.)
+.env.example (again for convenience)
 NEXT_PUBLIC_SITE_URL=https://myfuturelinks.com
 
-\# Mail delivery (Resend) MAIL_PROVIDER=resend MAIL_FROM=\"MyFutureLinks
-\<contact@myfuturelinks.com\>\" \# must be a verified sender
+MAIL_PROVIDER=resend MAIL_FROM=\"MyFutureLinks
+\<contact@myfuturelinks.com\>\"
 CONTACT_TO_EMAIL=enquiry@myfuturelinks.com
 RESEND_API_KEY=re\_\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*
 
-\# Anti-spam / rate limit CONTACT_COOLDOWN_SECONDS=60
+CONTACT_COOLDOWN_SECONDS=60 \# TURNSTILE_SITE_KEY= \#
+TURNSTILE_SECRET_KEY=
 
-\# Optional Cloudflare Turnstile (enable only if you render the widget)
-\# TURNSTILE_SITE_KEY= \# TURNSTILE_SECRET_KEY= If you want this split
-into /docs (e.g., docs/DEPLOYMENT.md, docs/DATA_MODEL.md,
-docs/CONTRIBUTING.md), say the word and I'll generate them too.
+If you want this split into a /docs folder (e.g., docs/DEPLOYMENT.md,
+docs/ADDING_JOBS.md), say the word and I'll generate those files too.
